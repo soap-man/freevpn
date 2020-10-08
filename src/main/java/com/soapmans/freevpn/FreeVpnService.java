@@ -75,9 +75,10 @@ public class FreeVpnService {
 
     public String sub() throws UnsupportedEncodingException {
         JSONObject jsonObject = getInfo();
-        String expireTime = jsonObject.getString("expireTime");
+        String expireTime = jsonObject.getString("expireTime").substring(11);
         String info = jsonObject.getString("username") + ":" + jsonObject.getString("password") + "@" + jsonObject.getString("serverIp") + ":" + jsonObject.getString("serverPort");
         String result = "https://" + Base64.getEncoder().encodeToString(info.getBytes()) + "?cert=&peer=#" + expireTime;
         return Base64.getEncoder().encodeToString(result.getBytes());
     }
+
 }
