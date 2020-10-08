@@ -78,6 +78,6 @@ public class FreeVpnService {
         String expireTime = jsonObject.getString("expireTime");
         String info = jsonObject.getString("username") + ":" + jsonObject.getString("password") + "@" + jsonObject.getString("serverIp") + ":" + jsonObject.getString("serverPort");
         String result = "https://" + Base64.getEncoder().encodeToString(info.getBytes()) + "?cert=&peer=#" + expireTime;
-        return result;
+        return Base64.getEncoder().encodeToString(result.getBytes());
     }
 }
