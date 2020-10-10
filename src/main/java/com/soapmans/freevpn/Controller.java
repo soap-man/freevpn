@@ -13,12 +13,12 @@ public class Controller {
     FreeVpnService freeVpnService;
 
     @RequestMapping(value = "/")
-    public String vpn(){
+    public String vpn() throws InterruptedException {
         return freeVpnService.getInfo().toJSONString();
     }
 
     @RequestMapping(value = "/sub")
-    public String sub() throws UnsupportedEncodingException {
+    public String sub() throws UnsupportedEncodingException, InterruptedException {
         return freeVpnService.sub();
     }
 }

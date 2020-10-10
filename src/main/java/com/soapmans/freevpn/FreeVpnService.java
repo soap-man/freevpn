@@ -21,7 +21,7 @@ public class FreeVpnService {
     @Resource
     RestTemplate restTemplate;
 
-    public JSONObject getInfo(){
+    public JSONObject getInfo() throws InterruptedException {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.add("Accept", MediaType.APPLICATION_JSON.toString());
@@ -49,17 +49,17 @@ public class FreeVpnService {
         String nodeId = defaultNode.getString("nodeId");
 
 
-        HttpHeaders headers2 = new HttpHeaders();
-        headers2.setContentType(MediaType.APPLICATION_JSON);
-        headers2.add("Accept", MediaType.APPLICATION_JSON.toString());
-        headers2.add("AccessToken", accessToken);
+        headers.add("AccessToken", accessToken);
 
         JSONObject json2 = new JSONObject();
         json2.put("channelNumber", "1001");
         json2.put("protocol", protocol);
         json2.put("nodeId", nodeId);
 
-        HttpEntity<String> formEntity2 = new HttpEntity<String>(json2.toString(), headers2);
+        HttpEntity<String> formEntity2 = new HttpEntity<String>(json2.toString(), headers);
+
+        Thread.sleep(1*1000);
+
         String response2 =  restTemplate.postForObject("https://api.1jainlian.xyz:21987/api/app/auth/node/connect", formEntity2, String.class);
         JSONObject nodeJson = JSON.parseObject(response2);
 
@@ -73,7 +73,7 @@ public class FreeVpnService {
         return resultJson;
     }
 
-    public String sub() throws UnsupportedEncodingException {
+    public String sub() throws UnsupportedEncodingException, InterruptedException {
         JSONObject jsonObject = getInfo();
         String expireTime = jsonObject.getString("expireTime").substring(11);
         String info = jsonObject.getString("username") + ":" + jsonObject.getString("password") + "@" + jsonObject.getString("serverIp") + ":" + jsonObject.getString("serverPort");
